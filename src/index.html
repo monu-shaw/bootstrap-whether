@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="main.js"></script>
+  </head>
+
+  <body class="p-4">
+    <button class="btn btn-primary">Primary button</button>
+
+    <button class="btn btn-secondary">Secondary button</button>
+
+    <div class="card">
+      <div
+        class="row"
+        style="
+          background-image: url('https://media.giphy.com/media/PbOaO2fedzQLm/giphy.gif');
+        "
+      >
+        <div class="col">
+          <div class="rounded-pill bg-light text-dark px-2 col-4 opacity-50">
+            <i class="bi bi-geo-alt">Kolkate,India</i>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="row px-4">
+            <div class="col-4"></div>
+            <div class="col-4"></div>
+            <div class="col-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      let loc = null;
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((r) => {
+            loc = r;
+            getWeather(`${r.coords.latitude},${r.coords.longitude}`);
+          }, showError);
+        } else {
+          alert('Geolocation is not supported by this browser.');
+        }
+      }
+      function showError(error) {
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            alert('Allow me to give you Awesome Experience');
+            getLocation();
+            break;
+          case error.POSITION_UNAVAILABLE:
+            alert('Sorry Their is a error with your Location');
+            break;
+          case error.TIMEOUT:
+            alert('Respond to prompt properly');
+            getLocation();
+            break;
+          case error.UNKNOWN_ERROR:
+            alert("Sorry This error don't known by me");
+            break;
+        }
+      }
+      const getWeather = (s) => {
+        fetch(
+          `https://api.weatherapi.com/v1/current.json?key=346e63ec4ea14dab80735007232804&q=${s}&aqi=yes`
+        )
+          .then((r) => r.json())
+          .then((r) => {
+            console.log(r);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+      window.addEventListener('DOMContentLoaded', getLocation);
+    </script>
+  </body>
+</html>
